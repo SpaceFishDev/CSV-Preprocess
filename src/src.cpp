@@ -43,7 +43,7 @@ int main(int argc, char** argv)
 	else
 	{
 		std::string fpath = cmd;
-
+		std::string src = ReadAsciiFile(fpath);
 	}
 }
 
