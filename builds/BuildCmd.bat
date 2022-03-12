@@ -1,1 +1,1 @@
-g++ ../src/src.cpp -o csvp.exe
+g++ ../src/src.cpp -o ../out/csvp.exe
