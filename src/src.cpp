@@ -70,7 +70,7 @@ int main(int argc, const char* argv[])
 	{
 		cout << "\n" << "Program Error:\n" << "\n" << " - File must be provided as first argument.\n\n";
 		cout << program.c_str() << " <path_with_file_to_process>\n\n";
-		return 1;
+		return -1;
 	}
 	else
 	{
