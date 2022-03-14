@@ -1,3 +1,3 @@
 #!/bin/bash
 
-g++ -std=c++11 -Wc++11-extensions ../src/src.cpp -o ../out/csvp
+g++ -std=c++11 ../src/src.cpp -o ../out/csvp
