@@ -5,28 +5,28 @@ using namespace std;
 
 vector<string> getRows(string src)
 {
-  const char* src_chr = src.c_str();
+	const char* src_chr = src.c_str();
 
-  string temp = "";
-  vector<string> rows;
+	string temp = "";
+	vector<string> rows;
 
-  while(*src_chr)
-  {
-    char c = *src_chr;
+	while(*src_chr)
+	{
+		char c = *src_chr;
 
-    if(c == '\n')
-    {
-      rows.push_back(temp);
-    }
-    else
-    {
-      temp += c;
-    }
+		if(c == '\n')
+		{
+			rows.push_back(temp);
+		}
+		else
+		{
+			temp += c;
+		}
 
-    ++src_chr;
-  }
+		++src_chr;
+	}
 
-  rows.push_back(temp);
+	rows.push_back(temp);
 
-  return rows;
+	return rows;
 }
