@@ -1,27 +1,36 @@
+#include<stdexcept>
 #include<iostream>
 #include<vector>
 
-std::string ReadAsciiFile(std::string path)
+using namespace std;
+
+string ReadAsciiFile(string path)
 {
-	std::string r = "";
-	std::vector<char> v;
+	string result = "";
+	vector<char> file_contents;
 
-	if (FILE *fp = fopen(path.c_str(), "r"))
+	if (FILE *file = fopen(path.c_str(), "r"))
 	{
-		char buf[1024];
 
-		while (size_t len = fread(buf, 1, sizeof(buf), fp))
-			v.insert(v.end(), buf, buf + len);
+		char char_buffer[1024];
 
-		fclose(fp);
+		while (size_t read_length = fread(char_buffer, 1, sizeof(char_buffer), file))
+			file_contents.insert(file_contents.end(), char_buffer, char_buffer + read_length);
+
+		fclose(file);
+
+	} else {
+
+		throw invalid_argument("File provided was not able to be opened for reading.");
+
 	}
 
-	for(char c : v)
+	for(char character : file_contents)
 	{
-		r += c;
+		result += character;
 	}
 
-	return r;
+	return result;
 }
 
 const char* sift(int* argc, const char** argv[])
@@ -32,20 +41,20 @@ const char* sift(int* argc, const char** argv[])
 	return arg;
 }
 
-std::string get_program(int* argc, const char** argv[])
+string get_program(int* argc, const char** argv[])
 {
-	std::string program = sift(argc, argv);
+	string program = sift(argc, argv);
 
 	const size_t last_slash_idx = program.find_last_of("\\/");
 
-	if (std::string::npos != last_slash_idx)
+	if (string::npos != last_slash_idx)
 	{
 		program.erase(0, last_slash_idx + 1);
 	}
 
 	const size_t period_idx = program.rfind('.');
 
-	if (std::string::npos != period_idx)
+	if (string::npos != period_idx)
 	{
 		program.erase(period_idx);
 	}
@@ -55,36 +64,35 @@ std::string get_program(int* argc, const char** argv[])
 
 int main(int argc, const char* argv[])
 {
-	std::string program = get_program(&argc, &argv);
+	string program = get_program(&argc, &argv);
 
 	if(argc == 0)
 	{
-		printf("\n");
-		printf("Program Error:\n");
-		printf("\n");
-		printf(" - File must be provided as first argument.\n");
-		printf("\n");
-		printf("%s <path_with_file_to_process>\n", program.c_str());
-		printf("\n");
+		cout << "\n" << "Program Error:\n" << "\n" << " - File must be provided as first argument.\n\n";
+		cout << program.c_str() << " <path_with_file_to_process>\n\n";
 		return 1;
 	}
 	else
 	{
-		std::string cmd = sift(&argc, &argv);
+		string cmd = sift(&argc, &argv);
 
 		if(cmd == "-h")
 		{
-			printf("\n");
-			printf("Program Usage:\n");
-			printf("\n");
-			printf("%s <path_with_file_to_process>\n", program.c_str());
-			printf("\n");
+			cout << "\n" << "Program Usage:\n" << "\n" << program.c_str() << " <path_with_file_to_process>\n\n";
 			return 0;
 		}
 		else
 		{
-			std::string fpath = cmd;
-			std::string src = ReadAsciiFile(fpath);
+			try
+			{
+				string fpath = cmd;
+				string src = ReadAsciiFile(fpath);
+			}
+			catch (invalid_argument& e)
+			{
+			  cerr << e.what() << endl;
+			  return -1;
+			}
 		}
 	}
 }
