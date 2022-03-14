@@ -24,16 +24,7 @@ std::string ReadAsciiFile(std::string path)
 	return r;
 }
 
-std::string sift_rw(int* argc, const char** argv[])
-{
-	--*argc;
-	const char* arg = **argv;
-	std::string arg_str = arg;
-	++*argv;
-	return arg_str;
-}
-
-const char* sift_ro(int* argc, const char** argv[])
+const char* sift(int* argc, const char** argv[])
 {
 	--*argc;
 	const char* arg = **argv;
@@ -43,7 +34,7 @@ const char* sift_ro(int* argc, const char** argv[])
 
 std::string get_program(int* argc, const char** argv[])
 {
-	std::string program = sift_rw(argc, argv);
+	std::string program = sift(argc, argv);
 
 	const size_t last_slash_idx = program.find_last_of("\\/");
 
@@ -79,7 +70,7 @@ int main(int argc, const char* argv[])
 	}
 	else
 	{
-		std::string cmd = sift_ro(&argc, &argv);
+		std::string cmd = sift(&argc, &argv);
 
 		if(cmd == "-h")
 		{
