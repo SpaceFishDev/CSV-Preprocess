@@ -20,9 +20,7 @@ string ReadAsciiFile(string path)
 		fclose(file);
 
 	} else {
-
-		throw invalid_argument("File provided was not able to be opened for reading.");
-
+		throw runtime_error("File provided was not able to be opened for reading.");
 	}
 
 	for(char character : file_contents)
