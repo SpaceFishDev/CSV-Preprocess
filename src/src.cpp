@@ -62,37 +62,44 @@ string get_program(int* argc, const char** argv[])
 	return program;
 }
 
+void show_usage(string program)
+{
+	cout << "\n" << "Program Usage:\n" << "\n" << program.c_str() << " <path_with_file_to_process>" << "\n" << endl;
+}
+
+void show_error(runtime_error exception_thrown)
+{
+	cerr << "\n" << "Program Error:\n" << "\n" << " - " << exception_thrown.what() << "\n" << endl;
+}
+
 int main(int argc, const char* argv[])
 {
-	string program = get_program(&argc, &argv);
+	try
+	{
+		string program = get_program(&argc, &argv);
 
-	if(argc == 0)
-	{
-		cout << "\n" << "Program Error:\n" << "\n" << " - File must be provided as first argument.\n\n";
-		cout << program.c_str() << " <path_with_file_to_process>\n\n";
-		return -1;
-	}
-	else
-	{
+		if(argc == 0)
+		{
+			show_usage(program);
+			throw runtime_error("File must be provided as first argument.");
+		}
+
 		string cmd = sift(&argc, &argv);
 
 		if(cmd == "-h")
 		{
-			cout << "\n" << "Program Usage:\n" << "\n" << program.c_str() << " <path_with_file_to_process>\n\n";
+			show_usage(program);
 			return 0;
 		}
 		else
 		{
-			try
-			{
-				string fpath = cmd;
-				string src = ReadAsciiFile(fpath);
-			}
-			catch (invalid_argument& e)
-			{
-				cerr << e.what() << endl;
-				return -1;
-			}
+			string maybe_file_with_path = cmd;
+			string result = ReadAsciiFile(maybe_file_with_path);
 		}
+	}
+	catch (runtime_error& exception_thrown)
+	{
+		show_error(exception_thrown);
+		return -1;
 	}
 }
